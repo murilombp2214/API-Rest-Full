@@ -10,11 +10,11 @@ namespace Desafio.Entidades.Base
         /// <summary>
         /// Id da sessão da requisição
         /// </summary>
-        public Guid CodigoSessao { get; set; } = Guid.Empty;
+        public Guid CodigoSessao { get; set; }
         /// <summary>
         /// id do cadastro
         /// </summary>
-        public Guid Codigo { get; set; } = Guid.Empty;
+        public Guid Codigo { get; set; }
         /// <summary>
         /// Se a entidade em questão está ativa ou inativa
         /// </summary>

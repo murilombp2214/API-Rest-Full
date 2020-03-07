@@ -22,6 +22,9 @@ namespace Desafio.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("CPF")
                         .HasColumnType("TEXT")
                         .HasMaxLength(11);
@@ -39,7 +42,38 @@ namespace Desafio.API.Migrations
 
                     b.HasKey("Codigo");
 
-                    b.ToTable("Pessoas");
+                    b.ToTable("Pessoa");
+                });
+
+            modelBuilder.Entity("Desafio.Entidades.Entidades.Sessao", b =>
+                {
+                    b.Property<Guid>("Codigo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("CodigoPessoa")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("InicioSessao")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Codigo");
+
+                    b.HasIndex("CodigoPessoa");
+
+                    b.ToTable("Sessao");
+                });
+
+            modelBuilder.Entity("Desafio.Entidades.Entidades.Sessao", b =>
+                {
+                    b.HasOne("Desafio.Entidades.Entidades.Pessoa", "Pessoa")
+                        .WithMany()
+                        .HasForeignKey("CodigoPessoa")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -12,5 +12,10 @@ namespace Desafio.Entidades.Base
         /// </summary>
         [Key]
         public Guid Codigo { get; set; } = Guid.Empty;
+
+        /// <summary>
+        /// Indicador se esta ativo ou nãi
+        /// </summary>
+        public bool Ativo { get; set; } = true;
     }
 }

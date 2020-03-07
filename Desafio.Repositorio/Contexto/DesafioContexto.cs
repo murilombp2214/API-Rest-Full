@@ -13,6 +13,7 @@ namespace Desafio.Repositorio.Contexto
         {
 
         }
-        public DbSet<Pessoa> Pessoas { get; set; }
+        public DbSet<Pessoa> Pessoa { get; set; }
+        public DbSet<Sessao> Sessao { get; set; }
     }
 }

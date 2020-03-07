@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Desafio.API.Migrations
 {
     [DbContext(typeof(ContextoAPI))]
-    [Migration("20200306030915_init")]
+    [Migration("20200307213810_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,9 @@ namespace Desafio.API.Migrations
                     b.Property<Guid>("Codigo")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("CPF")
                         .HasColumnType("TEXT")
@@ -41,7 +44,38 @@ namespace Desafio.API.Migrations
 
                     b.HasKey("Codigo");
 
-                    b.ToTable("Pessoas");
+                    b.ToTable("Pessoa");
+                });
+
+            modelBuilder.Entity("Desafio.Entidades.Entidades.Sessao", b =>
+                {
+                    b.Property<Guid>("Codigo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("CodigoPessoa")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("InicioSessao")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Codigo");
+
+                    b.HasIndex("CodigoPessoa");
+
+                    b.ToTable("Sessao");
+                });
+
+            modelBuilder.Entity("Desafio.Entidades.Entidades.Sessao", b =>
+                {
+                    b.HasOne("Desafio.Entidades.Entidades.Pessoa", "Pessoa")
+                        .WithMany()
+                        .HasForeignKey("CodigoPessoa")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

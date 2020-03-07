@@ -15,14 +15,13 @@ namespace Desafio.Servicos.Base
         where Request : BaseRequest
         where Response : BaseResponse
     {
-        protected Context Contexto { get; set; }
+        protected DesafioContexto<Context> Contexto { get; set; }
 
         protected DbSet<EntidadeBD> DBSet { get => Contexto.Set<EntidadeBD>();  }
         public ServicoBase(Context context)
         {
             Contexto = context;
         }
-
 
         public virtual Response CadastraEntidade(Request request)
         {
@@ -47,14 +46,22 @@ namespace Desafio.Servicos.Base
         {
             try
             {
-                EntidadeBD entidade = DBSet.Find(request.Codigo);
+                EntidadeBD entidade = DBSet.FirstOrDefault(x => x.Codigo == request.Codigo);
 
                 if (entidade is null)
                 {
                     return ErrorResponse("Entidade não encontarda");
                 }
 
-                ConvertMap.Convert(request, entidade);
+
+
+                var dadosReq = ConvertMap.Converta<Request, EntidadeBD>(request);
+
+                ConvertMap.Convert(dadosReq, entidade);
+
+                DBSet.Attach(entidade);
+                Contexto.Entry(entidade).State = EntityState.Modified;
+                Contexto.SaveChanges();
                 return ConvertMap.Converta<EntidadeBD, Response>(entidade);
             }
             catch (Exception erro)
@@ -84,6 +91,17 @@ namespace Desafio.Servicos.Base
             {
                 return ErrorResponse(erro.Message);
             }
+        }
+
+        public virtual Response Consulte(Func<EntidadeBD,bool> fistOrDefault)
+        {
+            EntidadeBD result =  DBSet.FirstOrDefault(fistOrDefault);
+            if(result is null)
+            {
+                return ErrorResponse("Nao encontrado");
+            }
+
+            return ConvertMap.Converta<EntidadeBD, Response>(result);
         }
 
 
